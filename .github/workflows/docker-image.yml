@@ -15,5 +15,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set date variable
+      id: date
+      run: echo "::set-output name=date::$(date +%s)"
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/majlitech/simplecctv:$(date +%s)
+      run: docker build . --file Dockerfile --tag ghcr.io/majlitech/simplecctv:${{ steps.date.outputs.date }}
+    - name: Push to registry
+      run: docker push ghcr.io/majlitech/simplecctv:${{ steps.date.outputs.date }}
