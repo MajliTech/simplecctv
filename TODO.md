@@ -1,0 +1,4 @@
+    - [] a nicer UI
+    - [] some way to password protect streams (will propably use MediaMTX's abillites)
+    - [] a way to record camera feeds 24/7
+    - [] automatic removal of old feeds after X amount of time

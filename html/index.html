@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live video viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        html {
+            padding: 0;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #feeds {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+
+        }
+        video {
+            max-width: 700px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Simple CCTV: LIVE</h1>
+    <div id="feeds"></div>
+</body>
+<script>
+    // Assuming you're running this code in a browser environment
+    // const apiUrl = 'http://192.168.12.51:9997/v3/paths/list';
+    const apiUrl = '/api/v3/paths/list';
+
+    // Make a GET request to the API endpoint
+    fetch(apiUrl)
+        .then(response => {
+            // Check if the request was successful (status code 200 OK)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Parse the response body as JSON
+            return response.json();
+        })
+        .then(jsonData => {
+            // Handle the JSON data here
+            console.log('JSON data:', jsonData);
+            jsonData["items"].forEach(element => {
+                vid=document.createElement("video")
+                vid.controls = "true"
+                vid.autoplay = true
+                vid.muted=true
+                document.querySelector("#feeds").appendChild(vid)
+                // var serverRoot = '/';
+                var serverRoot = '/live/';
+                if (Hls.isSupported()) {
+                    var hls = new Hls();
+                    hls.loadSource(serverRoot+element["name"]+"/index.m3u8");
+                    hls.attachMedia(vid);
+                }
+                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = serverRoot+element["name"]+"/index.m3u8";
+                }
+            });
+        })
+        .catch(error => {
+            // Handle any errors that occurred during the fetch
+            console.error('Fetch error:', error);
+        });
+
+</script>
+
+</html>
