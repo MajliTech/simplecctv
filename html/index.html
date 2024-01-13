@@ -53,9 +53,9 @@
             console.log('JSON data:', jsonData);
             jsonData["items"].forEach(element => {
                 vid=document.createElement("video")
-                vid.controls = "true"
-                vid.autoplay = true
+                vid.controls =true
                 vid.muted=true
+                vid.autoplay = true
                 document.querySelector("#feeds").appendChild(vid)
                 // var serverRoot = '/';
                 var serverRoot = '/live/';
