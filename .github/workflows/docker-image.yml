@@ -19,7 +19,7 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +%s)"
     - name: Authenticate to Docker
-      run: echo ${{ secrets.GH_TOKEN) | docker login ghcr.io -u majlitech --password-stdin
+      run: echo ${{ secrets.GH_TOKEN }} | docker login ghcr.io -u majlitech --password-stdin
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ghcr.io/majlitech/simplecctv:${{ steps.date.outputs.date }}
     - name: Push to registry
